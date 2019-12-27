@@ -1,2 +1,2 @@
 # ROC-analysis
-http://blog.harrix.org/article/1015  - for building
+http://blog.harrix.org/article/1015  - for building (for me)
