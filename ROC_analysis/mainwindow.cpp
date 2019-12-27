@@ -45,10 +45,10 @@ static float *list1;
 static float *list2;
 
 
-static QList<double > massCOP;
+static QList<float > massCOP;
 static int * PH; static int * PD; static int * NH; static int * ND;
-static double * Se;
-static double * Spec;
+static float * Se;
+static float * Spec;
 
 
 void MainWindow::on_pushButton_clicked()
@@ -294,13 +294,13 @@ void MainWindow::on_pushButton_2_clicked()
      }
 
      qDebug()<<"k - пересечения "<<k;
-     double c;
+     float c;
      c=(maxH+minD)/(k*2);
 
      qDebug()<<"C "<<c;
 
      //делаем границу разделения COP1
-     double COP1;
+     float COP1;
      COP1= minD + c;
      qDebug()<<"COP1 "<<COP1;
      int len; len=0;
@@ -382,7 +382,7 @@ void MainWindow::on_pushButton_2_clicked()
 
      //определяем оптимальную точку разделения (сумма PH и ND минимальна)
      int St,Sum, sumj; St=0;Sum=PH[0]+ND[0];
-     double opt_COP;
+     float opt_COP;
      for(int j=1;j<len;j++)
         {
          St=PH[j]+ND[j];
@@ -397,12 +397,12 @@ void MainWindow::on_pushButton_2_clicked()
 
 
      //расчет Se,Spec
-     Se = new double [len];
-     Spec = new double [len];
+     Se = new float [len];
+     Spec = new float [len];
      for(int i=0;i<len;i++)
         {
-         Se[i]=PD[i]*1.0/(PD[i]+ND[i])*1.0;
-         Spec[i]=NH[i]*1.0/(NH[i]+PH[i])*1.0;
+         Se[i]=float(PD[i])/(float(PD[i])+float(ND[i]));
+         Spec[i]=float(NH[i])/(float(NH[i])+float(PH[i]));
         }
 
      for(int i =0;i<len;i++)
@@ -427,16 +427,16 @@ void MainWindow::on_pushButton_2_clicked()
 
    QString cop_opt, j_opt ,sum_err, Spec_str, senc_str ;
    cop_opt = "Оптимальная граница разделения классов : ";
-   cop_opt.append(QString::number(opt_COP));
+   cop_opt.append(QString::number(double(opt_COP)));
    j_opt = "номер точки : ";
    j_opt.append(QString::number(sumj));
    sum_err = "Сумма ошибок: ";
    sum_err.append(QString::number(Sum));
    Spec_str = "Специфичность: ";
-   Spec_str.append(QString::number(Spec[sumj]));
+   Spec_str.append(QString::number(double(Spec[sumj])));
 
    senc_str = "Чувствительность ";
-   senc_str.append(QString::number(Se[sumj]));
+   senc_str.append(QString::number(double(Se[sumj])));
 
    txt->setText("Проведенные расчеты:");
    txt->append(cop_opt);
@@ -514,7 +514,7 @@ void MainWindow::on_pushButton_4_clicked()
    no_sp = new double [len];
    for(int i=0;i<len;i++)
     {
-     no_sp[i]=1-Spec[i];
+     no_sp[i]=1-double(Spec[i]);
     }
 
    //create graph and assign data to it:   1-sp =x, se = y
@@ -524,7 +524,7 @@ void MainWindow::on_pushButton_4_clicked()
        for (int i =0;i<len;i++)
         {
          X[i]=no_sp[i];
-         Y[i]=Se[i];
+         Y[i]=double(Se[i]);
         }
 
        ui->widget->addGraph();
