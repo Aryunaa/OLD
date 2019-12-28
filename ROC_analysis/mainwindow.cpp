@@ -280,7 +280,8 @@ void MainWindow::on_pushButton_2_clicked()
      maxH=maxfunc(list1);
      qDebug()<<"maxH "<<maxH;
 
-     int k;k=0;
+if(maxH>minD)
+{     int k;k=0;
      for(int i=0;i<str_kol;i++)
      {
          if(list2[i]<=maxH)
@@ -301,7 +302,8 @@ void MainWindow::on_pushButton_2_clicked()
 
      //делаем границу разделения COP1
      float COP1;
-     COP1= minD + c;
+     //COP1= minD + c;
+     COP1= minD;
      qDebug()<<"COP1 "<<COP1;
      int len; len=0;
      int j; j =0;
@@ -318,7 +320,7 @@ void MainWindow::on_pushButton_2_clicked()
      len = massCOP.length();
      //определяем PH,PD,NH,ND
 
-     PH = new int [massCOP.length()];
+     PH = new int [len];
      PD = new int [len];
      NH = new int[len];
      ND = new int [len];
@@ -447,6 +449,18 @@ void MainWindow::on_pushButton_2_clicked()
    txt->show();
 
 
+}else
+{ float COP1;
+  COP1 = (maxH+minD)/2;
+  QTextEdit *txt = new QTextEdit();
+  txt->setFixedHeight(150);
+  txt->setFixedWidth(300);
+  txt->setText("Множества не пересекаются, оптимальная граница разделения классов: ");
+  txt->append(QString::number(double(COP1)));
+  txt->show();
+
+}
+
 
 }
 
@@ -539,6 +553,25 @@ void MainWindow::on_pushButton_4_clicked()
        ui->widget->xAxis->setRange(0,1);
        ui->widget->yAxis->setRange(0,1);
        ui->widget->replot();
+
+
+
+
+       QTextEdit *txt = new QTextEdit();
+       txt->setFixedHeight(150);
+       txt->setFixedWidth(300);
+
+       txt->setText("Площадь под кривой: ");
+       double P1; P1=0;
+       for(int i=0;i<(len-2);i++)
+       {
+           P1+= ((Y[i]+Y[i+1])/2)*fabs((X[i+1]-X[i]));
+       }
+
+       txt->append(QString::number(P1));
+       txt->show();
+
+
 
 
 
